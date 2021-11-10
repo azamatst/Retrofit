@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.retrofit.App;
 import com.example.retrofit.R;
 import com.example.retrofit.data.models.Film;
@@ -32,7 +33,7 @@ public class SingleFilmFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSingleFilmBinding.inflate(inflater);
         return binding.getRoot();
     }
@@ -61,12 +62,13 @@ public class SingleFilmFragment extends Fragment {
         }
     }
 
-    private void setDataInUi(Film body) {
-        binding.releaseDate.setText(body.getReleaseDate());
-        binding.tvOriginalTitle.setText(body.getOriginalTitle());
-        binding.tvTitle.setText(body.getTitle());
-        binding.tvDirector.setText(body.getDirector());
-        binding.tvDescription.setText(body.getDescription());
+    private void setDataInUi(Film film) {
+        binding.releaseDate.setText(film.getReleaseDate());
+        binding.tvOriginalTitle.setText(film.getOriginalTitle());
+        binding.tvTitle.setText(film.getTitle());
+        binding.tvDirector.setText(film.getDirector());
+        binding.tvDescription.setText(film.getDescription());
+        Glide.with(this).load(film.getImage()).into(binding.image);
     }
 
 

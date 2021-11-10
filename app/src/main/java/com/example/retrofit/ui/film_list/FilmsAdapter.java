@@ -64,7 +64,9 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
             binding.filmDirector.setText(film.getDirector());
             binding.tvDate.setText(film.getReleaseDate());
 
-            itemView.setOnClickListener(v -> listener.onClick(film.getId()));
+            itemView.setOnClickListener(v -> {
+                listener.onClick(film.getId());
+            });
         }
     }
 

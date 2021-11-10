@@ -16,6 +16,10 @@ public class Film {
 
     private String description;
 
+    private String image;
+
+
+
     private String director;
 
     private List<String> people;
@@ -31,6 +35,14 @@ public class Film {
         this.description = description;
         this.director = director;
         this.people = people;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getReleaseDate(){return releaseDate;}
