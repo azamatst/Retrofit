@@ -1,5 +1,7 @@
 package com.example.retrofit.ui.film_detail;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.retrofit.App;
-import com.example.retrofit.R;
 import com.example.retrofit.data.models.Film;
 import com.example.retrofit.databinding.FragmentSingleFilmBinding;
 
@@ -24,13 +25,13 @@ import retrofit2.Response;
 
 public class SingleFilmFragment extends Fragment {
     private FragmentSingleFilmBinding binding;
-    private String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,15 +42,17 @@ public class SingleFilmFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        id = getArguments().getString("bio");
-        if (id != null) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        String id = getArguments().getString("bio");
+        if (id != null){
             App.api.getFilm(id).enqueue(new Callback<Film>() {
                 @Override
                 public void onResponse(Call<Film> call, Response<Film> response) {
-                    if(response.isSuccessful() && response.body() != null){
-                        setDataInUi(response.body());
+                    if (response.isSuccessful() && response.body() != null){
+                        setData(response.body());
+                        binding.progressBar.setVisibility(View.GONE);
                     }else {
-                        Log.e("TAG", "onFailure: " + response.errorBody().toString());
+                        Log.e(TAG, "onFAILURE: " + response.errorBody().toString());
                     }
                 }
 
@@ -60,9 +63,40 @@ public class SingleFilmFragment extends Fragment {
                 }
             });
         }
+//        id = getArguments().getString("bio");
+//        if (id != null) {
+//            App.api.getFilm(id).enqueue(new Callback<Film>() {
+//                @Override
+//                public void onResponse(Call<Film> call, Response<Film> response) {
+//                    if(response.isSuccessful() && response.body() != null){
+//                        setDataOnUi(response.body());
+//                        binding.progressBar.setVisibility(View.GONE);
+//                    }else {
+//                        Log.e("TAG", "onFailure: " + response.errorBody().toString());
+//                    }
+//                }
+//
+//
+//                @Override
+//                public void onFailure(Call<Film> call, Throwable t) {
+//                    Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
+//
+//                }
+//            });
+//        }
     }
 
-    private void setDataInUi(Film film) {
+    private void setData(Film film) {
+        binding.releaseDate.setText(film.getReleaseDate());
+        binding.tvOriginalTitle.setText(film.getOriginalTitle());
+        binding.tvTitle.setText(film.getTitle());
+        binding.tvDirector.setText(film.getDirector());
+        binding.tvDescription.setText(film.getDescription());
+        Glide.with(this).load(film.getImage()).into(binding.image);
+
+    }
+
+    private void setDataOnUi(Film film) {
         binding.releaseDate.setText(film.getReleaseDate());
         binding.tvOriginalTitle.setText(film.getOriginalTitle());
         binding.tvTitle.setText(film.getTitle());

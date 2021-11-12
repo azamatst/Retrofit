@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.retrofit.App;
 import com.example.retrofit.R;
@@ -30,21 +29,18 @@ public class FilmsFragment extends Fragment implements FilmsAdapter.OnItemClickL
     private FragmentFilmsBinding binding;
     private FilmsAdapter adapter;
 
-
-    public FilmsFragment() {
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         adapter = new FilmsAdapter();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentFilmsBinding.inflate(inflater, container, false);
+        binding = FragmentFilmsBinding.inflate(inflater,
+                container,
+                false);
         return binding.getRoot();
 
     }
@@ -57,17 +53,18 @@ public class FilmsFragment extends Fragment implements FilmsAdapter.OnItemClickL
 
         App.api.getFilms().enqueue(new Callback<List<Film>>() {
             @Override
-            public void onResponse(Call<List<Film>> call, Response<List<Film>> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    Log.e("ololo", "onResponse: " + response.body() );
+            public void onResponse(@NonNull Call<List<Film>> call,
+                                   @NonNull Response<List<Film>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("ololo", "onResponse: " + response.body());
                     adapter.setFilms(response.body());
-                }else {
+                } else {
                     Log.e("TAG", "onFailure: " + response.errorBody().toString());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Film>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Film>> call, @NonNull Throwable t) {
                 Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
             }
         });
@@ -76,8 +73,10 @@ public class FilmsFragment extends Fragment implements FilmsAdapter.OnItemClickL
     @Override
     public void onClick(String id) {
         Bundle bundle = new Bundle();
-        bundle.putString("bio", id);
+        bundle.putString("bio",id);
         NavController navController = NavHostFragment.findNavController(this);
-        navController.navigate(R.id.singleFilmFragment, bundle);
+        navController.navigate(R.id.singleFilmFragment,bundle);
     }
+
+
 }

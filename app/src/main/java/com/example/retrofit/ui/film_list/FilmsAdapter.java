@@ -1,5 +1,6 @@
 package com.example.retrofit.ui.film_list;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
         this.listener = listener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setFilms(List<Film> films) {
         this.films = films;
         notifyDataSetChanged();
@@ -50,7 +52,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
 
     public class FilmsViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemFilmBinding binding;
+        private final ItemFilmBinding binding;
 
         public FilmsViewHolder(@NonNull ItemFilmBinding binding) {
             super(binding.getRoot());
@@ -63,10 +65,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.FilmsViewHol
             binding.filmName.setText(film.getTitle());
             binding.filmDirector.setText(film.getDirector());
             binding.tvDate.setText(film.getReleaseDate());
-
-            itemView.setOnClickListener(v -> {
-                listener.onClick(film.getId());
-            });
+            itemView.setOnClickListener(view -> listener.onClick(film.getId()));
         }
     }
 
